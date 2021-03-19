@@ -1,10 +1,8 @@
 package de.workshops.bookdemo;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Setter
-@Getter
+@Data
 public class BookError {
 
     private String message;
