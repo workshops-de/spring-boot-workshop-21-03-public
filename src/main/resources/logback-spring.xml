@@ -48,9 +48,9 @@
 
     <!-- debug, info, warning, severe, off -->
     <logger name="liquibase" level="warn" />
-    <logger name="org.springframework" level="warn" />
+    <logger name="org.springframework" level="info" />
     <logger name="com.zaxxer.hikari" level="info" />
-    <logger name="org.apache" level="warn" />
+    <logger name="org.apache" level="info" />
 
     <logger name="org.hibernate" level="warn" />
     <logger name="org.hibernate.SQL" level="warn" />
