@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -33,10 +34,10 @@ public class BookRestController {
         return getAllBooks().stream().filter(book -> hasIsbn(book, isbn)).findFirst().orElseThrow(() -> new BookException("no book for isbn " + isbn));
     }
     
-//    @GetMapping(params = "author")
-//    public Book getBookByAuthor(@RequestParam(required = false) String author) {
-//        return getAllBooks().stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow();
-//    }
+    @GetMapping(params = "author")
+    public Book getBookByAuthor(@RequestParam(required = false) String author) {
+        return getAllBooks().stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow();
+    }
     
     @PostMapping("/search")
     public List<Book> searchBooks(@RequestBody BookSearchRequest request) {
