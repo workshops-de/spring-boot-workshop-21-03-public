@@ -1,5 +1,10 @@
 server:
   port: 8080
+
+bookdemo:
+  param1: Das ist ein Test
+  nested:
+    param3: Param3
   
 ---
 
