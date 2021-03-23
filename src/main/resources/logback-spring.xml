@@ -53,7 +53,7 @@
     <logger name="org.apache" level="info" />
 
     <logger name="org.hibernate" level="warn" />
-    <logger name="org.hibernate.SQL" level="warn" />
+    <logger name="org.hibernate.SQL" level="DEBUG" />
      <logger name="org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator" level="debug" /> <!-- zeigt die DB connections -->
 
     <!-- für die SQL Parameter: org.hibernate.type => 'trace'-->
