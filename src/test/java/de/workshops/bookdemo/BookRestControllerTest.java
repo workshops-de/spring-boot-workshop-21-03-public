@@ -4,16 +4,17 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -21,34 +22,37 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.restassured.RestAssured;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
-//@AutoConfigureMockMvc
+@SpringBootTest
+@AutoConfigureMockMvc
 class BookRestControllerTest {
 
     @Autowired
     private BookRestController restController;
     
-//    @Autowired
+    @Autowired
     private MockMvc mockMvc;
     
     @Autowired
     ObjectMapper mapper;
     
+    @Mock
+    BookRepository bookRepository;
+    
     
     @BeforeEach
     public void setup() {
+        //ReflectionTestUtils.setField(bookService, "bookRepository", bookRepository);
     }
     
-    @Test
-    void testWithMethodCall() {
-        assertNotNull(restController);
-        List<Book> books = restController.getAllBooks();
-        assertNotNull(books);
-        assertEquals(3, books.size());
-    }
+//    @Test
+//    void testWithMethodCall() {
+//        assertNotNull(restController);
+//        List<Book> books = restController.getAllBooks();
+//        assertNotNull(books);
+//        assertEquals(3, books.size());
+//    }
     
     @Test
     void testWithMockMvc() throws Exception {
@@ -81,19 +85,27 @@ class BookRestControllerTest {
              statusCode(200).
              body("author[0]", equalTo("Erich Gamma"));
     }
-
+    
     @Test
-    public void testWithRestAssure() {
-        //RestAssured.standaloneSetup(restController);
-        RestAssured.given().
-            log().all().
-        when().
-            get("/book").
-        then().
-            log().all().
-            statusCode(200).
-            body("author[0]", equalTo("Erich Gamma"));
+    void mockTestWithMethodCall() throws Exception {
+        when(bookRepository.findAllBooks()).thenReturn(null);
+        
+        mockMvc.perform(MockMvcRequestBuilders.get(BookRestController.REQUEST_URL))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
+
+//    @Test
+//    public void testWithRestAssure() {
+//        RestAssured.given().
+//            log().all().
+//        when().
+//            get("/book").
+//        then().
+//            log().all().
+//            statusCode(200).
+//            body("author[0]", equalTo("Erich Gamma"));
+//    }
     
     
 

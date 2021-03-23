@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,23 +26,28 @@ public class BookRestController {
     
             
     @GetMapping
-    public List<Book> getAllBooks() {
-        return bookService.loadAllBooks();
+    public ResponseEntity<List<Book>> getAllBooks() {
+        List<Book> result = bookService.loadAllBooks();
+        if (result == null) {
+            return new ResponseEntity<List<Book>>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<List<Book>>(result, HttpStatus.OK);
+        }
     }
     
     @GetMapping("/{isbn}")
     public Book getBookByIsbn(@PathVariable String isbn) {
-        return getAllBooks().stream().filter(book -> hasIsbn(book, isbn)).findFirst().orElseThrow(() -> new BookException("no book for isbn " + isbn));
+        return bookService.loadAllBooks().stream().filter(book -> hasIsbn(book, isbn)).findFirst().orElseThrow(() -> new BookException("no book for isbn " + isbn));
     }
     
     @GetMapping(params = "author")
     public Book getBookByAuthor(@RequestParam(required = false) String author) {
-        return getAllBooks().stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow();
+        return bookService.loadAllBooks().stream().filter(book -> hasAuthor(book, author)).findFirst().orElseThrow();
     }
     
     @PostMapping("/search")
     public List<Book> searchBooks(@RequestBody BookSearchRequest request) {
-        return getAllBooks().stream().filter(book -> find(book, request)).collect(Collectors.toList());
+        return bookService.loadAllBooks().stream().filter(book -> find(book, request)).collect(Collectors.toList());
     }
     
     private boolean find(Book book, BookSearchRequest request) {
