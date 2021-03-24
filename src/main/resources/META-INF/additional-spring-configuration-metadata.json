@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "bookdemo.param1",
+      "type": "java.lang.String",
+      "description": "string prop 2."
+    }, 
+    {
+      "name": "bookdemo.param2",
+      "type": "java.lang.Integer",
+      "description": "int prop."
+    }
+  ]
+}
