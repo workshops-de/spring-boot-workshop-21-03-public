@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd"
+    logicalFilePath="liquibase/changelogs" objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+    <!-- logicalFilePath="liquibase/changelogs" ist notwendig, da liquibase unter CLI und maven sonst unterschiedliche filenames 
+        als Bestandteil des changeset identifier hätten und daher das changeset IMMER ausführen würden 
+        CLI: liquibase/changelog.xml 
+        MVN: target/classes/liquibase/changelog.xml -->
+
+
+  <changeSet id="createTableBooks" author="dominik">
+  
+        <createTable tableName="book">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="title2" type="varchar" />
+            <column name="author" type="varchar" />
+            <column name="isbn" type="varchar" />
+            <column name="description" type="varchar" />
+        </createTable>
+        <rollback>
+            <dropTable tableName="book" />
+        </rollback>
+  </changeSet>
+
+</databaseChangeLog>
